@@ -83,13 +83,15 @@ const App = () => {
     if (loading) return <div className="text-center py-4">Loading...</div>;
     if (error) return <div className="text-center py-4 text-red-500">Error: {error.message}</div>;
 
+    // Calculate pagination
     const indexOfLastProduct = currentPage * itemsPerPage;
     const indexOfFirstProduct = indexOfLastProduct - itemsPerPage;
     const currentProducts = filteredProducts.slice(indexOfFirstProduct, indexOfLastProduct);
 
+    // Calculate total pages
     const totalPages = Math.ceil(filteredProducts.length / itemsPerPage);
 
-
+    // Page buttons logic
     const maxButtons = 10;
     let startPage = Math.max(1, currentPage - Math.floor(maxButtons / 2));
     let endPage = Math.min(totalPages, startPage + maxButtons - 1);
@@ -98,7 +100,7 @@ const App = () => {
         startPage = Math.max(1, endPage - maxButtons + 1);
     }
 
-
+    // Change page handler
     const handlePageChange = (page) => {
         setCurrentPage(page);
     };

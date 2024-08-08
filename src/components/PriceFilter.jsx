@@ -1,47 +1,60 @@
 // components/PriceFilter.js
-import React from 'react';
-
-const priceRanges = [
-    { label: '0-5000', min: 0, max: 5000 },
-    { label: '5000-10000', min: 5000, max: 10000 },
-    { label: '10000-20000', min: 10000, max: 20000 },
-    { label: '20000+', min: 20000, max: Infinity }
-];
+import React, { useState } from 'react';
 
 const PriceFilter = ({ selectedPriceRange, onPriceChange }) => {
-    const handleChange = (range) => {
-        if (selectedPriceRange?.label === range.label) {
-            onPriceChange(null); // Clear selection if double-clicked
-        } else {
-            onPriceChange(range);
+    const [isOpen, setIsOpen] = useState(false);
+    const [selectedRange, setSelectedRange] = useState(selectedPriceRange);
+    const [clickTimeout, setClickTimeout] = useState(null);
+
+    const priceRanges = [
+        { label: '0-5000', min: 0, max: 5000 },
+        { label: '5000-10000', min: 5000, max: 10000 },
+        { label: '10000-20000', min: 10000, max: 20000 },
+        { label: '20000+', min: 20000, max: Infinity },
+    ];
+
+    const handleSelectRange = (range) => {
+        if (clickTimeout) {
+            clearTimeout(clickTimeout);
+            setClickTimeout(null);
+            if (selectedRange === range) {
+                // Double-click detected, clear selection
+                setSelectedRange(null);
+                onPriceChange(null);
+                setIsOpen(false);
+                return;
+            }
         }
+
+        // Single click
+        setClickTimeout(setTimeout(() => {
+            setSelectedRange(range);
+            onPriceChange(range);
+            setIsOpen(false);
+        }, 250)); // Adjust timeout as needed
     };
 
     return (
-        <div className="mb-4">
-            <h2 className="text-lg font-semibold mb-2">Price Range</h2>
-            <div className="space-y-2">
-                {priceRanges.map(range => (
-                    <div
-                        key={range.label}
-                        className="flex items-center cursor-pointer"
-                        onClick={() => handleChange(range)}
-                        onDoubleClick={() => handleChange(range)}
-                    >
-
-                        <input
-                            type="radio"
-                            id={range.label}
-                            name="priceRange"
-                            checked={selectedPriceRange?.label === range.label}
-                            readOnly
-                            className="mr-2"
-                        />
-                        
-                        <label htmlFor={range.label} className="text-gray-700">{range.label}</label>
-                    </div>
-                ))}
-            </div>
+        <div className="relative">
+            <button
+                onClick={() => setIsOpen(!isOpen)}
+                className="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg shadow-md hover:bg-gray-300"
+            >
+                Price Range: {selectedRange ? `${selectedRange.label}` : 'Select'}
+            </button>
+            {isOpen && (
+                <ul className="absolute top-full left-0 mt-2 w-full bg-white border border-gray-200 rounded-lg shadow-md">
+                    {priceRanges.map((range) => (
+                        <li
+                            key={range.label}
+                            onClick={() => handleSelectRange(range)}
+                            className={`px-4 py-2 cursor-pointer hover:bg-gray-100 ${selectedRange === range ? 'bg-gray-200' : ''}`}
+                        >
+                            {range.label}
+                        </li>
+                    ))}
+                </ul>
+            )}
         </div>
     );
 };

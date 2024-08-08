@@ -1,45 +1,60 @@
 // components/PopularityFilter.js
-import React from 'react';
-
-const popularityRanges = [
-    { label: '0-10000', min: 0, max: 10000 },
-    { label: '10000-30000', min: 10000, max: 30000 },
-    { label: '30000-50000', min: 30000, max: 50000 },
-    { label: '50000+', min: 50000, max: Infinity }
-];
+import React, { useState } from 'react';
 
 const PopularityFilter = ({ selectedPopularityRange, onPopularityChange }) => {
-    const handleChange = (range) => {
-        if (selectedPopularityRange?.label === range.label) {
-            onPopularityChange(null); // Clear selection if double-clicked
-        } else {
-            onPopularityChange(range);
+    const [isOpen, setIsOpen] = useState(false);
+    const [selectedRange, setSelectedRange] = useState(selectedPopularityRange);
+    const [clickTimeout, setClickTimeout] = useState(null);
+
+    const popularityRanges = [
+        { label: '0-10000', min: 0, max: 10000 },
+        { label: '10000-30000', min: 10000, max: 30000 },
+        { label: '30000-50000', min: 30000, max: 50000 },
+        { label: '50000+', min: 50000, max: Infinity },
+    ];
+
+    const handleSelectRange = (range) => {
+        if (clickTimeout) {
+            clearTimeout(clickTimeout);
+            setClickTimeout(null);
+            if (selectedRange === range) {
+                // Double-click detected, clear selection
+                setSelectedRange(null);
+                onPopularityChange(null);
+                setIsOpen(false);
+                return;
+            }
         }
+
+        // Single click
+        setClickTimeout(setTimeout(() => {
+            setSelectedRange(range);
+            onPopularityChange(range);
+            setIsOpen(false);
+        }, 250)); // Adjust timeout as needed
     };
 
     return (
-        <div className="mb-4">
-            <h2 className="text-lg font-semibold mb-2">Popularity Range</h2>
-            <div className="space-y-2">
-                {popularityRanges.map(range => (
-                    <div
-                        key={range.label}
-                        className="flex items-center cursor-pointer"
-                        onClick={() => handleChange(range)}
-                        onDoubleClick={() => handleChange(range)} // Handle double-click
-                    >
-                        <input
-                            type="radio"
-                            id={range.label}
-                            name="popularityRange"
-                            checked={selectedPopularityRange?.label === range.label}
-                            readOnly
-                            className="mr-2"
-                        />
-                        <label htmlFor={range.label} className="text-gray-700">{range.label}</label>
-                    </div>
-                ))}
-            </div>
+        <div className="relative">
+            <button
+                onClick={() => setIsOpen(!isOpen)}
+                className="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg shadow-md hover:bg-gray-300"
+            >
+                Popularity Range: {selectedRange ? `${selectedRange.label}` : 'Select'}
+            </button>
+            {isOpen && (
+                <ul className="absolute top-full left-0 mt-2 w-full bg-white border border-gray-200 rounded-lg shadow-md">
+                    {popularityRanges.map((range) => (
+                        <li
+                            key={range.label}
+                            onClick={() => handleSelectRange(range)}
+                            className={`px-4 py-2 cursor-pointer hover:bg-gray-100 ${selectedRange === range ? 'bg-gray-200' : ''}`}
+                        >
+                            {range.label}
+                        </li>
+                    ))}
+                </ul>
+            )}
         </div>
     );
 };

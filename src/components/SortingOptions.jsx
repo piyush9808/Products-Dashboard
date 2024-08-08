@@ -1,4 +1,3 @@
-// components/SortingOptions.js
 import React from 'react';
 
 const SortingOptions = ({ sortBy, onSortChange }) => {

@@ -18,7 +18,6 @@ const PriceFilter = ({ selectedPriceRange, onPriceChange }) => {
             clearTimeout(clickTimeout);
             setClickTimeout(null);
             if (selectedRange === range) {
-                // Double-click detected, clear selection
                 setSelectedRange(null);
                 onPriceChange(null);
                 setIsOpen(false);
@@ -26,12 +25,11 @@ const PriceFilter = ({ selectedPriceRange, onPriceChange }) => {
             }
         }
 
-        // Single click
         setClickTimeout(setTimeout(() => {
             setSelectedRange(range);
             onPriceChange(range);
             setIsOpen(false);
-        }, 250)); // Adjust timeout as needed
+        }, 250)); 
     };
 
     return (

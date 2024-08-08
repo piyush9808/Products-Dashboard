@@ -1,8 +1,7 @@
-// components/ProductDetailModal.js
 import React from 'react';
 import Modal from 'react-modal';
 
-Modal.setAppElement('#root'); // For accessibility
+Modal.setAppElement('#root'); 
 
 const ProductDetailModal = ({ isOpen, onRequestClose, product }) => {
     if (!product) return null;
@@ -18,7 +17,7 @@ const ProductDetailModal = ({ isOpen, onRequestClose, product }) => {
             <div className="p-6 flex flex-col">
                 <button
                     onClick={onRequestClose}
-                    className="absolute top-4 right-3"
+                    className="absolute top-0  right-4"
                 >
                     <div class="close-container">
                         <div class="leftright"></div>
@@ -26,12 +25,13 @@ const ProductDetailModal = ({ isOpen, onRequestClose, product }) => {
                         
                     </div>
                 </button>
-
+               
                 <h2 className="text-2xl font-bold mb-4 flex justify-center">{product.title}</h2>
+                <div className='mt-[40px]'>
                 <p className="text-lg mb-2"><strong>Price:</strong> {product.price}💰</p>
                 <p className="text-lg mb-2"><strong>Popularity:</strong> {product.popularity}🔥</p>
                 <p className="text-lg"><strong>Description:</strong> {product.description || 'You can answer calls or messages from your iPhone directly on your Mac. Copy images, video or text from your iPhone, then paste into another app on your nearby Mac. And with iCloud, you can access your favourite files from either your iPhone or Mac.'}</p>
-
+                </div>
             </div>
         </Modal>
     );

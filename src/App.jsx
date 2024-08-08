@@ -5,7 +5,7 @@ import PriceFilter from './components/PriceFilter';
 import PopularityFilter from './components/PopularityFilter';
 import SortingOptions from './components/SortingOptions';
 import ProductDetailModal from './components/ProductDetailModal';
-import stock from './assests/stock.png'
+
 
 const App = () => {
     const [allProducts, setAllProducts] = useState([]);
@@ -84,16 +84,17 @@ const App = () => {
     if (loading) return <div className="text-center py-4">Loading...</div>;
     if (error) return <div className="text-center py-4 text-red-500">Error: {error.message}</div>;
 
-    // Calculate pagination
+
     const indexOfLastProduct = currentPage * itemsPerPage;
     const indexOfFirstProduct = indexOfLastProduct - itemsPerPage;
     const currentProducts = filteredProducts.slice(indexOfFirstProduct, indexOfLastProduct);
 
-    // Calculate total pages
+
     const totalPages = Math.ceil(filteredProducts.length / itemsPerPage);
 
-    // Page buttons logic
+
     const maxButtons = 10;
+
     let startPage = Math.max(1, currentPage - Math.floor(maxButtons / 2));
     let endPage = Math.min(totalPages, startPage + maxButtons - 1);
 
@@ -101,35 +102,35 @@ const App = () => {
         startPage = Math.max(1, endPage - maxButtons + 1);
     }
 
-    // Change page handler
+
     const handlePageChange = (page) => {
         setCurrentPage(page);
     };
 
     return (
         <div className="container mx-auto px-4 py-6">
-            <ProductDetailModal 
-                isOpen={isModalOpen} 
-                onRequestClose={closeModal} 
-                product={selectedProduct} 
+            <ProductDetailModal
+                isOpen={isModalOpen}
+                onRequestClose={closeModal}
+                product={selectedProduct}
             />
             <h1 className="text-2xl flex justify-center font-bold mb-4">PRODUCT DASHBOARD</h1>
-           <div>
-            <SearchBar onSearch={setSearchQuery} />
-            <div className="flex space-x-4 mb-6">
-                <PriceFilter 
-                    selectedPriceRange={selectedPriceRange} 
-                    onPriceChange={setSelectedPriceRange} 
-                />
-                <PopularityFilter 
-                    selectedPopularityRange={selectedPopularityRange} 
-                    onPopularityChange={setSelectedPopularityRange} 
-                />
-                <SortingOptions 
-                    sortBy={sortBy} 
-                    onSortChange={setSortBy} 
-                />
-            </div>
+            <div>
+                <SearchBar onSearch={setSearchQuery} />
+                <div className="flex space-x-4 mb-6">
+                    <PriceFilter
+                        selectedPriceRange={selectedPriceRange}
+                        onPriceChange={setSelectedPriceRange}
+                    />
+                    <PopularityFilter
+                        selectedPopularityRange={selectedPopularityRange}
+                        onPopularityChange={setSelectedPopularityRange}
+                    />
+                    <SortingOptions
+                        sortBy={sortBy}
+                        onSortChange={setSortBy}
+                    />
+                </div>
             </div>
             {Array.isArray(filteredProducts) && filteredProducts.length > 0 ? (
                 <>
@@ -143,8 +144,8 @@ const App = () => {
                         </thead>
                         <tbody>
                             {currentProducts.map((product, index) => (
-                                <tr 
-                                    key={index} 
+                                <tr
+                                    key={index}
                                     className="border-b border-gray-200 cursor-pointer"
                                     onClick={() => handleProductClick(product)}
                                 >
@@ -156,49 +157,70 @@ const App = () => {
                         </tbody>
                     </table>
 
-                    <div className="flex justify-between items-center mt-4 ">
-                        <button 
-                            onClick={() => handlePageChange(currentPage - 1)} 
+                    <div className="flex justify-between items-center mt-4 flex-wrap sm:flex-nowrap">
+                        <button
+                            onClick={() => handlePageChange(currentPage - 1)}
                             disabled={currentPage === 1}
                             className={`px-4 py-2 bg-blue-500 text-white rounded-lg shadow-md ${currentPage === 1 ? 'opacity-50 cursor-not-allowed' : 'hover:bg-blue-600'}`}
                         >
                             Previous
                         </button>
-                        <div className="flex space-x-2">
-                            {startPage > 1 && (
-                                <>
-                                    <button 
-                                        onClick={() => handlePageChange(1)}
-                                        className="px-4 py-2 rounded-lg bg-gray-200 text-gray-700 hover:bg-gray-300"
-                                    >
-                                        1
-                                    </button>
-                                    {startPage > 2 && <span className="px-4 py-2 text-gray-500">...</span>}
-                                </>
-                            )}
-                            {Array.from({ length: endPage - startPage + 1 }, (_, i) => (
-                                <button 
-                                    key={startPage + i} 
-                                    onClick={() => handlePageChange(startPage + i)}
-                                    className={`px-4 py-2 rounded-lg ${currentPage === startPage + i ? 'bg-blue-500 text-white' : 'bg-gray-200 text-gray-700'} hover:bg-blue-400`}
-                                >
-                                    {startPage + i}
-                                </button>
-                            ))}
-                            {endPage < totalPages && (
-                                <>
-                                    {endPage < totalPages - 1 && <span className="px-4 py-2 text-gray-500">...</span>}
-                                    <button 
-                                        onClick={() => handlePageChange(totalPages)}
-                                        className="px-4 py-2 rounded-lg bg-gray-200 text-gray-700 hover:bg-gray-300"
-                                    >
-                                        {totalPages}
-                                    </button>
-                                </>
-                            )}
+
+                        <div className="flex space-x-2 justify-center mt-2 md:mt-0 sm:flex-1 sm:justify-center">
+                            {/* Show page numbers only on medium and larger screens */}
+                            <div className="hidden sm:flex space-x-2">
+                                {(() => {
+                                    // Determine the maximum number of page buttons based on screen size
+                                    const maxButtons = window.innerWidth >= 768 ? 5 : 10; // 5 for md devices, 10 for larger screens
+
+                                    let startPage = Math.max(1, currentPage - Math.floor(maxButtons / 2));
+                                    let endPage = Math.min(totalPages, startPage + maxButtons - 1);
+
+                                    if (endPage - startPage + 1 < maxButtons) {
+                                        startPage = Math.max(1, endPage - maxButtons + 1);
+                                    }
+
+                                    return (
+                                        <>
+                                            {startPage > 1 && (
+                                                <>
+                                                    <button
+                                                        onClick={() => handlePageChange(1)}
+                                                        className="px-4 py-2 rounded-lg bg-gray-200 text-gray-700 hover:bg-gray-300"
+                                                    >
+                                                        1
+                                                    </button>
+                                                    {startPage > 2 && <span className="px-4 py-2 text-gray-500">...</span>}
+                                                </>
+                                            )}
+                                            {Array.from({ length: endPage - startPage + 1 }, (_, i) => (
+                                                <button
+                                                    key={startPage + i}
+                                                    onClick={() => handlePageChange(startPage + i)}
+                                                    className={`px-4 py-2 rounded-lg ${currentPage === startPage + i ? 'bg-blue-500 text-white' : 'bg-gray-200 text-gray-700'} hover:bg-blue-400`}
+                                                >
+                                                    {startPage + i}
+                                                </button>
+                                            ))}
+                                            {endPage < totalPages && (
+                                                <>
+                                                    {endPage < totalPages - 1 && <span className="px-4 py-2 text-gray-500">...</span>}
+                                                    <button
+                                                        onClick={() => handlePageChange(totalPages)}
+                                                        className="px-4 py-2 rounded-lg bg-gray-200 text-gray-700 hover:bg-gray-300"
+                                                    >
+                                                        {totalPages}
+                                                    </button>
+                                                </>
+                                            )}
+                                        </>
+                                    );
+                                })()}
+                            </div>
                         </div>
-                        <button 
-                            onClick={() => handlePageChange(currentPage + 1)} 
+
+                        <button
+                            onClick={() => handlePageChange(currentPage + 1)}
                             disabled={currentPage === totalPages}
                             className={`px-4 py-2 bg-blue-500 text-white rounded-lg shadow-md ${currentPage === totalPages ? 'opacity-50 cursor-not-allowed' : 'hover:bg-blue-600'}`}
                         >

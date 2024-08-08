@@ -1,4 +1,3 @@
-// components/PopularityFilter.js
 import React, { useState } from 'react';
 
 const PopularityFilter = ({ selectedPopularityRange, onPopularityChange }) => {
@@ -18,7 +17,6 @@ const PopularityFilter = ({ selectedPopularityRange, onPopularityChange }) => {
             clearTimeout(clickTimeout);
             setClickTimeout(null);
             if (selectedRange === range) {
-                // Double-click detected, clear selection
                 setSelectedRange(null);
                 onPopularityChange(null);
                 setIsOpen(false);
@@ -26,12 +24,11 @@ const PopularityFilter = ({ selectedPopularityRange, onPopularityChange }) => {
             }
         }
 
-        // Single click
         setClickTimeout(setTimeout(() => {
             setSelectedRange(range);
             onPopularityChange(range);
             setIsOpen(false);
-        }, 250)); // Adjust timeout as needed
+        }, 250));
     };
 
     return (

@@ -11,13 +11,13 @@ const SearchBar = ({ onSearch }) => {
     };
 
     return (
-        <div className="mb-4">
+        <div className="my-4">
             <input
                 type="text"
                 value={query}
                 onChange={handleChange}
-                placeholder="Search products..."
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2
+                placeholder="Samsung,Apple,Motorola"
+                className="w-1/4 px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2
                  focus:ring-blue-500"
             />
 

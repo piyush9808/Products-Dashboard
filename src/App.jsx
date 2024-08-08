@@ -5,6 +5,7 @@ import PriceFilter from './components/PriceFilter';
 import PopularityFilter from './components/PopularityFilter';
 import SortingOptions from './components/SortingOptions';
 import ProductDetailModal from './components/ProductDetailModal';
+import stock from './assests/stock.png'
 
 const App = () => {
     const [allProducts, setAllProducts] = useState([]);
@@ -112,7 +113,8 @@ const App = () => {
                 onRequestClose={closeModal} 
                 product={selectedProduct} 
             />
-            <h1 className="text-2xl font-bold mb-4">Products</h1>
+            <h1 className="text-2xl flex justify-center font-bold mb-4">PRODUCT DASHBOARD</h1>
+           <div>
             <SearchBar onSearch={setSearchQuery} />
             <div className="flex space-x-4 mb-6">
                 <PriceFilter 
@@ -128,14 +130,15 @@ const App = () => {
                     onSortChange={setSortBy} 
                 />
             </div>
+            </div>
             {Array.isArray(filteredProducts) && filteredProducts.length > 0 ? (
                 <>
                     <table className="min-w-full bg-white border border-gray-200 rounded-lg shadow-md">
                         <thead className="bg-gray-100 border-b border-gray-200">
                             <tr>
-                                <th className="px-6 py-3 text-left text-gray-600 font-medium">Title</th>
-                                <th className="px-6 py-3 text-left text-gray-600 font-medium">Price</th>
-                                <th className="px-6 py-3 text-left text-gray-600 font-medium">Popularity</th>
+                                <th className="px-6 py-3 text-left text-gray-600 font-bold">Title</th>
+                                <th className="px-6 py-3 text-left text-gray-600 font-bold">Price</th>
+                                <th className="px-6 py-3 text-left text-gray-600 font-bold">Popularity </th>
                             </tr>
                         </thead>
                         <tbody>
@@ -152,7 +155,8 @@ const App = () => {
                             ))}
                         </tbody>
                     </table>
-                    <div className="flex justify-between items-center mt-4">
+
+                    <div className="flex justify-between items-center mt-4 ">
                         <button 
                             onClick={() => handlePageChange(currentPage - 1)} 
                             disabled={currentPage === 1}

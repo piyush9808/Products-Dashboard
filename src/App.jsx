@@ -10,7 +10,7 @@ import ProductDetailModal from './components/ProductDetailModal';
 const App = () => {
     const [allProducts, setAllProducts] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
-    const [itemsPerPage] = useState(10);
+    const [itemsPerPage] = useState(6);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [filteredProducts, setFilteredProducts] = useState([]);
@@ -68,7 +68,7 @@ const App = () => {
         }
 
         setFilteredProducts(results);
-        setCurrentPage(1); // Reset to the first page when filters or sorting change
+        setCurrentPage(1); 
     }, [searchQuery, selectedPriceRange, selectedPopularityRange, sortBy, allProducts]);
 
     const handleProductClick = (product) => {
@@ -108,7 +108,7 @@ const App = () => {
     };
 
     return (
-        <div className="container mx-auto px-4 py-6">
+        <div className="container bg-black text-white mx-auto h-screen px-4 py-8">
             <ProductDetailModal
                 isOpen={isModalOpen}
                 onRequestClose={closeModal}
@@ -132,46 +132,50 @@ const App = () => {
                     />
                 </div>
             </div>
+
             {Array.isArray(filteredProducts) && filteredProducts.length > 0 ? (
                 <>
-                    <table className="min-w-full bg-white border border-gray-200 rounded-lg shadow-md">
-                        <thead className="bg-gray-100 border-b border-gray-200">
+                    <table className="min-w-full  rounded-lg shadow-md">
+                        <thead>
                             <tr>
-                                <th className="px-6 py-3 text-left text-gray-600 font-bold">Title</th>
-                                <th className="px-6 py-3 text-left text-gray-600 font-bold">Price</th>
-                                <th className="px-6 py-3 text-left text-gray-600 font-bold">Popularity </th>
+                                <th className="px-6 py-3 text-left bg-zinc-800 font-bold">Title</th>
+                                <th className="px-6 py-3 text-left bg-zinc-800 font-bold">Price</th>
+                                <th className="px-6 py-3 text-left bg-zinc-800 font-bold">Popularity </th>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody >
                             {currentProducts.map((product, index) => (
                                 <tr
                                     key={index}
-                                    className="border-b border-gray-200 cursor-pointer"
+                                    className="cursor-pointer border-y-2"
                                     onClick={() => handleProductClick(product)}
                                 >
                                     <td className="px-6 py-4">{product.title}</td>
-                                    <td className="px-6 py-4">{product.price}</td>
+                                    <td className="px-6 py-4">$ {product.price}</td>
                                     <td className="px-6 py-4">{product.popularity}</td>
                                 </tr>
+
+
                             ))}
                         </tbody>
                     </table>
 
-                    <div className="flex justify-between items-center mt-4 flex-wrap sm:flex-nowrap">
+                    <div className="flex justify-between bg-black  items-center mt-2 py-8 flex-wrap sm:flex-nowrap">
                         <button
                             onClick={() => handlePageChange(currentPage - 1)}
                             disabled={currentPage === 1}
-                            className={`px-4 py-2 bg-blue-500 text-white rounded-lg shadow-md ${currentPage === 1 ? 'opacity-50 cursor-not-allowed' : 'hover:bg-blue-600'}`}
+                            className={`px-4 py-2 bg-black border rounded-lg shadow-md ${currentPage === 1 ? 'opacity-50 cursor-not-allowed' : 'hover:bg-zinc-800 hover:text-white bg-white text-black'}`}
                         >
+                        
                             Previous
                         </button>
 
                         <div className="flex space-x-2 justify-center mt-2 md:mt-0 sm:flex-1 sm:justify-center">
-                            {/* Show page numbers only on medium and larger screens */}
+                           
                             <div className="hidden sm:flex space-x-2">
                                 {(() => {
-                                    // Determine the maximum number of page buttons based on screen size
-                                    const maxButtons = window.innerWidth >= 768 ? 5 : 10; // 5 for md devices, 10 for larger screens
+                                  
+                                    const maxButtons = window.innerWidth >= 768 ? 5 : 10; 
 
                                     let startPage = Math.max(1, currentPage - Math.floor(maxButtons / 2));
                                     let endPage = Math.min(totalPages, startPage + maxButtons - 1);
@@ -197,17 +201,18 @@ const App = () => {
                                                 <button
                                                     key={startPage + i}
                                                     onClick={() => handlePageChange(startPage + i)}
-                                                    className={`px-4 py-2 rounded-lg ${currentPage === startPage + i ? 'bg-blue-500 text-white' : 'bg-gray-200 text-gray-700'} hover:bg-blue-400`}
+                                                    className={`px-4 py-2 rounded-lg ${currentPage === startPage + i ? 'bg-white text-black' : 'bg-black border text-white'} hover:bg-gray-800 border hover:text-white`}
                                                 >
                                                     {startPage + i}
                                                 </button>
                                             ))}
+
                                             {endPage < totalPages && (
                                                 <>
-                                                    {endPage < totalPages - 1 && <span className="px-4 py-2 text-gray-500">...</span>}
+                                                    {endPage < totalPages - 1 && <span className="px-4 py-2  text-gray-500">...</span>}
                                                     <button
                                                         onClick={() => handlePageChange(totalPages)}
-                                                        className="px-4 py-2 rounded-lg bg-gray-200 text-gray-700 hover:bg-gray-300"
+                                                        className="px-4 py-2 rounded-lg bg-black border text-white hover:bg-gray-800"
                                                     >
                                                         {totalPages}
                                                     </button>
@@ -222,11 +227,12 @@ const App = () => {
                         <button
                             onClick={() => handlePageChange(currentPage + 1)}
                             disabled={currentPage === totalPages}
-                            className={`px-4 py-2 bg-blue-500 text-white rounded-lg shadow-md ${currentPage === totalPages ? 'opacity-50 cursor-not-allowed' : 'hover:bg-blue-600'}`}
+                            className={`px-4 py-2 bg-black border  rounded-lg shadow-md ${currentPage === totalPages ? 'opacity-50 cursor-not-allowed' : 'hover:bg-zinc-800 hover:text-white bg-white text-black'}`}
                         >
                             Next
                         </button>
                     </div>
+
                 </>
             ) : (
                 <div className="text-center py-4">No products available</div>

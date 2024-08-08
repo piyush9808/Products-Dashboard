@@ -35,17 +35,17 @@ const PopularityFilter = ({ selectedPopularityRange, onPopularityChange }) => {
         <div className="relative">
             <button
                 onClick={() => setIsOpen(!isOpen)}
-                className="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg shadow-md hover:bg-gray-300"
+                className="px-4 py-2 bg-black border text-white rounded-lg shadow-md hover:bg-gray-800"
             >
                 Popularity Range: {selectedRange ? `${selectedRange.label}` : 'Select'}
             </button>
             {isOpen && (
-                <ul className="absolute top-full left-0 mt-2 w-full bg-white border border-gray-200 rounded-lg shadow-md">
+                <ul className="absolute top-full left-0 mt-2 w-full bg-black text-white  border rounded-lg shadow-md">
                     {popularityRanges.map((range) => (
                         <li
                             key={range.label}
                             onClick={() => handleSelectRange(range)}
-                            className={`px-4 py-2 cursor-pointer hover:bg-gray-100 ${selectedRange === range ? 'bg-gray-200' : ''}`}
+                            className={`px-4 py-2 cursor-pointer hover:bg-gray-800 ${selectedRange === range ? 'bg-gray-800' : ''}`}
                         >
                             {range.label}
                         </li>

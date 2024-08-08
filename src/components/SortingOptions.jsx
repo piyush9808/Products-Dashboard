@@ -11,9 +11,9 @@ const SortingOptions = ({ sortBy, onSortChange }) => {
             <select
                 value={sortBy}
                 onChange={handleSortChange}
-                className="p-2 border border-gray-300 rounded-lg"
+                className="p-2 border bg-black text-white hover:cursor-pointer  rounded-lg"
             >
-                <option value="">Sort By</option>
+                <option value="">Sort By</option> 
                 <option value="price-asc">Price: Low to High</option>
                 <option value="price-desc">Price: High to Low</option>
                 <option value="popularity-asc">Popularity: Low to High</option>

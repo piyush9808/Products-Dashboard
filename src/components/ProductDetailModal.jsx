@@ -11,7 +11,7 @@ const ProductDetailModal = ({ isOpen, onRequestClose, product }) => {
             isOpen={isOpen}
             onRequestClose={onRequestClose}
             contentLabel="Product Details"
-            className="modal-content bg-zinc-300"
+            className="modal-content text-white border-2"
             overlayClassName="modal-overlay"
         >
             <div className="p-6 flex flex-col">
@@ -30,7 +30,7 @@ const ProductDetailModal = ({ isOpen, onRequestClose, product }) => {
                 <div className='mt-[40px]'>
                 <p className="text-lg mb-2"><strong>Price:</strong> {product.price}💰</p>
                 <p className="text-lg mb-2"><strong>Popularity:</strong> {product.popularity}🔥</p>
-                <p className="text-lg"><strong>Description:</strong> {product.description || 'You can answer calls or messages from your iPhone directly on your Mac. Copy images, video or text from your iPhone, then paste into another app on your nearby Mac. And with iCloud, you can access your favourite files from either your iPhone or Mac.'}</p>
+                <p className="text-lg"><strong>Description:</strong> <p className ='gap-2'> Experience cutting-edge technology with the{product.title}.With its competitive price of {product.price}, it offers excellent value.The {product.title} has gained widespread popularity, earning a huge fanbase of {product.popularity} worldwide.</p></p>
                 </div>
             </div>
         </Modal>

@@ -68,7 +68,7 @@ const App = () => {
         }
 
         setFilteredProducts(results);
-        setCurrentPage(1); // Reset to the first page when filters or sorting change
+        setCurrentPage(1); 
     }, [searchQuery, selectedPriceRange, selectedPopularityRange, sortBy, allProducts]);
 
     const handleProductClick = (product) => {

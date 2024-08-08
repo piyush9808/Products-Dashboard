@@ -1,6 +1,4 @@
 import React, { useState } from 'react';
-import PopularityFilter from './PopularityFilter';
-import PriceFilter from './PriceFilter';
 
 const SearchBar = ({ onSearch }) => {
     const [query, setQuery] = useState('');
